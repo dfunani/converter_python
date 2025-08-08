@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Converter App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">Converter App</div>
+        <ul class="navbar-tabs">
+            <li class="active" id="tab-converters">Converters</li>
+            <li id="tab-json">JSON Viewer</li>
+        </ul>
+    </nav>
+    <main>
+        <section class="converter-section" id="section-converters">
+            <h2>Select Converter</h2>
+            <select id="converter-select">
+                <option value="binary">Binary Converter</option>
+                <!-- Add more converters here -->
+            </select>
+            <div class="conversion-form">
+                <label for="convert-to">Convert To:</label>
+                <select id="convert-to">
+                    <option value="decimal">Decimal</option>
+                    <option value="hexadecimal">Hexadecimal</option>
+                    <option value="octal">Octal</option>
+                </select>
+                <input type="text" id="input-value" placeholder="Enter value...">
+                <button id="convert-btn">Convert</button>
+            </div>
+            <div id="result" class="result-box"></div>
+        </section>
+        <section class="json-section" id="section-json" style="display:none;">
+            <h2>JSON Viewer</h2>
+            <textarea id="json-input" placeholder="Paste your JSON here..." rows="8" style="width:100%; border-radius:8px; border:1px solid #c7d2fe; padding:1rem; font-size:1rem;"></textarea>
+            <div id="json-output" class="result-box" style="margin-top:1rem; min-height:3rem;">Formatted JSON will appear here.</div>
+        </section>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
