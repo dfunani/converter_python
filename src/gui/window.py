@@ -80,6 +80,7 @@ class AppWindow(QMainWindow):
         self.page_converters_layout = QVBoxLayout(self.page_converters)
         self.page_converters_layout.setContentsMargins(32, 32, 32, 32)
         self.page_converters_layout.setSpacing(24)
+        self.page_converters_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
 
         self.converter_title = QLabel("Select Converter")
         self.converter_title.setObjectName("sectionTitle")
@@ -130,6 +131,7 @@ class AppWindow(QMainWindow):
         self.page_json_layout = QVBoxLayout(self.page_json)
         self.page_json_layout.setContentsMargins(32, 32, 32, 32)
         self.page_json_layout.setSpacing(24)
+        self.page_json_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
 
         self.json_title = QLabel("JSON Viewer")
         self.json_title.setObjectName("sectionTitle")
@@ -208,18 +210,19 @@ class AppWindow(QMainWindow):
                 color: #fff;
             }
             #centeredStacked {
-                min-width: 350px;
-                max-width: 400px;
-                width: 100vw;
+                min-width: 500px;
+                max-width: 800px;
+                max-height: 600px;
+                width: 80vw;
             }
             #converterSection, #jsonSection {
                 background: #fff;
                 border-radius: 16px;
                 box-shadow: 0 4px 24px rgba(99,102,241,0.08);
-                min-width: 350px;
-                max-width: 400px;
-                margin-left: auto;
-                margin-right: auto;
+                min-width: 500px;
+                max-width: 800px;
+                max-height: 600px;
+                margin: auto;
             }
             #sectionTitle {
                 color: #6366f1;
@@ -233,6 +236,7 @@ class AppWindow(QMainWindow):
                 border: 1px solid #c7d2fe;
                 font-size: 16px;
                 outline: none;
+                /* Let layout handle width */
             }
             #converterSelect:focus, #convertToSelect:focus, #inputValue:focus, #jsonInput:focus {
                 border: 1.5px solid #6366f1;
@@ -251,6 +255,7 @@ class AppWindow(QMainWindow):
                 font-weight: 500;
                 cursor: pointer;
                 margin-top: 8px;
+                /* Let layout handle width */
             }
             #convertBtn:hover {
                 background: #818cf8;
@@ -262,35 +267,8 @@ class AppWindow(QMainWindow):
                 color: #374151;
                 font-size: 16px;
                 box-shadow: 0 2px 8px rgba(99,102,241,0.05);
+                /* Let layout handle width */
             }
         ''')
 
-    #     # Create a button for converters
-    #     self.tab_converters = QPushButton("Converters", parent=self.navbar)
-    #     self.tab_converters.setStyleSheet("background-color: #444; color: #fff;")
-    #     self.tab_converters.clicked.connect(self.show_converters)
-    #     self.navbar_layout.addWidget(self.tab_converters)
-
-    #     # Create a button for JSON
-    #     self.tab_json = QPushButton("JSON", parent=self.navbar)
-    #     self.tab_json.setStyleSheet("background-color: #444; color: #fff;")
-    #     self.tab_json.clicked.connect(self.show_json)
-    #     self.navbar_layout.addWidget(self.tab_json)
-
-    #     # Create a section for converters
-    #     self.section_converters = QWidget(self)
-    #     self.section_converters.setStyleSheet("background-color: #f0f0f0;")
-    #     self.section_converters_layout = QVBoxLayout(self.section_converters)
-
-    #     # Create a section for JSON
-    #     self.section_json = QWidget(self)
-    #     self.section_json.setStyleSheet("background-color: #f0f0f0;")
-    #     self.section_json_layout = QVBoxLayout(self.section_json)
-
-    # def show_converters(self):
-    #     self.section_converters.show()
-    #     self.section_json.hide()
-
-    # def show_json(self):
-    #     self.section_json.show()
-    #     self.section_converters.hide()
+    
