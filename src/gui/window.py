@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 from PyQt6.QtCore import Qt
+from factory import ConverterFactory, Converters
 
 
 class AppWindow(QMainWindow):
@@ -78,7 +79,7 @@ class AppWindow(QMainWindow):
         self.page_converters = QWidget()
         self.page_converters.setObjectName("converterSection")
         self.page_converters_layout = QVBoxLayout(self.page_converters)
-        self.page_converters_layout.setContentsMargins(32, 32, 32, 32)
+        self.page_converters_layout.setContentsMargins(60, 60, 60, 60)
         self.page_converters_layout.setSpacing(24)
         self.page_converters_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
 
@@ -88,7 +89,8 @@ class AppWindow(QMainWindow):
 
         from PyQt6.QtWidgets import QComboBox, QLineEdit
         self.converter_select = QComboBox()
-        self.converter_select.addItem("Binary Converter", "binary")
+        for converter in Converters:
+            self.converter_select.addItem(converter.name.title(), converter)
         self.converter_select.setObjectName("converterSelect")
         self.page_converters_layout.addWidget(self.converter_select)
 
@@ -103,21 +105,43 @@ class AppWindow(QMainWindow):
         self.form_layout.addWidget(self.label_convert_to)
 
         self.convert_to_select = QComboBox()
-        self.convert_to_select.addItems(["Decimal", "Hexadecimal", "Octal"])
         self.convert_to_select.setObjectName("convertToSelect")
         self.form_layout.addWidget(self.convert_to_select)
+
+        # Populate convert_to_select based on initial converter
+        def update_convert_to_options():
+            self.convert_to_select.clear()
+            converter = self.converter_select.currentData()
+            if converter is not None:
+                print(converter)
+                for opt in converter.value[1]:
+                    self.convert_to_select.addItem(opt.name.title(), opt)
+
+        # Initial population
+        update_convert_to_options()
+        # Update on converter change
+        self.converter_select.currentIndexChanged.connect(update_convert_to_options)
 
         self.input_value = QLineEdit()
         self.input_value.setPlaceholderText("Enter value...")
         self.input_value.setObjectName("inputValue")
         self.form_layout.addWidget(self.input_value)
 
+        def update_input_value(text: str):
+            # update the text in result box
+            converter = self.converter_select.currentData()
+            if converter is not None:
+                conversion_type = self.convert_to_select.currentData()
+                if conversion_type is not None:
+                    text = ConverterFactory.get_converter(converter.name).to(text, conversion_type.name)
+                    self.result_box.setText(str(text))
+
         self.convert_btn = QPushButton("Convert")
         self.convert_btn.setObjectName("convertBtn")
         self.form_layout.addWidget(self.convert_btn)
 
         self.page_converters_layout.addWidget(self.form_frame)
-
+        self.convert_btn.clicked.connect(lambda: update_input_value(self.input_value.text()))
         self.result_box = QLabel("Converted value will appear here.")
         self.result_box.setObjectName("resultBox")
         self.result_box.setMinimumHeight(32)
@@ -129,9 +153,10 @@ class AppWindow(QMainWindow):
         self.page_json = QWidget()
         self.page_json.setObjectName("jsonSection")
         self.page_json_layout = QVBoxLayout(self.page_json)
-        self.page_json_layout.setContentsMargins(32, 32, 32, 32)
+
         self.page_json_layout.setSpacing(24)
         self.page_json_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        self.page_json_layout.setContentsMargins(60, 60, 60, 60)
 
         self.json_title = QLabel("JSON Viewer")
         self.json_title.setObjectName("sectionTitle")
@@ -141,7 +166,7 @@ class AppWindow(QMainWindow):
         self.json_input = QTextEdit()
         self.json_input.setPlaceholderText("Paste your JSON here...")
         self.json_input.setObjectName("jsonInput")
-        self.json_input.setFixedHeight(160)
+        # self.json_input.setFixedHeight(160)
         self.page_json_layout.addWidget(self.json_input)
 
         self.json_output = QLabel("Formatted JSON will appear here.")
@@ -217,18 +242,17 @@ class AppWindow(QMainWindow):
             }
             #converterSection, #jsonSection {
                 background: #fff;
-                border-radius: 16px;
+                border-radius: 32px;
                 box-shadow: 0 4px 24px rgba(99,102,241,0.08);
-                min-width: 500px;
-                max-width: 800px;
                 max-height: 600px;
+                width: 100%;
                 margin: auto;
+                
             }
             #sectionTitle {
                 color: #6366f1;
                 font-size: 20px;
                 font-weight: 600;
-                margin-bottom: 16px;
             }
             #converterSelect, #convertToSelect, #inputValue, #jsonInput {
                 padding: 8px;
@@ -236,7 +260,6 @@ class AppWindow(QMainWindow):
                 border: 1px solid #c7d2fe;
                 font-size: 16px;
                 outline: none;
-                /* Let layout handle width */
             }
             #converterSelect:focus, #convertToSelect:focus, #inputValue:focus, #jsonInput:focus {
                 border: 1.5px solid #6366f1;
@@ -255,7 +278,8 @@ class AppWindow(QMainWindow):
                 font-weight: 500;
                 cursor: pointer;
                 margin-top: 8px;
-                /* Let layout handle width */
+                margin-left: 3px;
+                margin-right: 3px;
             }
             #convertBtn:hover {
                 background: #818cf8;
@@ -267,7 +291,8 @@ class AppWindow(QMainWindow):
                 color: #374151;
                 font-size: 16px;
                 box-shadow: 0 2px 8px rgba(99,102,241,0.05);
-                /* Let layout handle width */
+                margin-left: 3px;
+                margin-right: 3px;
             }
         ''')
 

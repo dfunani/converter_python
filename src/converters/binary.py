@@ -10,6 +10,7 @@ class BinaryConversions(Enum):
 
 class BinaryConverter:
     def to(self, value: Any, convert_to: str) -> Any:
+        print(f"Converting {value} to {convert_to}")
         match convert_to:
             case BinaryConversions.DECIMAL.name:
                 return self._to_decimal(value)
